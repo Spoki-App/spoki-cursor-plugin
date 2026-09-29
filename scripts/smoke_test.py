@@ -5,7 +5,8 @@ Connects over Streamable HTTP, prints the live tool catalog from tools/list,
 then lists tags with get_tags (read-only) if the server exposes that tool.
 
 Usage:
-    SPOKI_API_KEY=your-key python3 scripts/smoke_test.py
+    read -rs SPOKI_API_KEY && export SPOKI_API_KEY
+    python3 scripts/smoke_test.py
 
 Standard library only. The key is read from the environment and never printed.
 """
@@ -117,7 +118,7 @@ def read_messages(response):
     for raw_line in response:
         line = raw_line.decode("utf-8").rstrip("\r\n")
         if line.startswith("data:"):
-            value = line[len("data:"):]
+            value = line[len("data:") :]
             data_lines.append(value[1:] if value.startswith(" ") else value)
         elif line == "" and data_lines:
             yield from as_list(json.loads("\n".join(data_lines)))
@@ -188,7 +189,7 @@ def run(url, api_key):
 def main():
     api_key = os.environ.get("SPOKI_API_KEY", "").strip()
     if not api_key:
-        print("Set SPOKI_API_KEY first: SPOKI_API_KEY=your-key python3 scripts/smoke_test.py", file=sys.stderr)
+        print("Set SPOKI_API_KEY first: read -rs SPOKI_API_KEY && export SPOKI_API_KEY", file=sys.stderr)
         return 2
     try:
         return run(MCP_URL, api_key)
