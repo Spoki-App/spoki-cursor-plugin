@@ -1,0 +1,49 @@
+{
+  "name": "spoki",
+  "displayName": "Spoki",
+  "version": "1.0.0",
+  "description": "Manage your Spoki WhatsApp Business account from Cursor and Grok Bot: contacts, lists, tags, templates, campaigns, automations, and tickets through Spoki's remote MCP server.",
+  "author": {
+    "name": "Spoki",
+    "email": "support@spoki.com"
+  },
+  "homepage": "https://support.spoki.com/en/docs/integrations/get-started-with-spoki-mcp/",
+  "repository": "https://github.com/Spoki-App/spoki-cursor-plugin",
+  "license": "MIT",
+  "logo": "assets/logo.svg",
+  "keywords": [
+    "spoki",
+    "whatsapp",
+    "whatsapp business",
+    "messaging",
+    "crm",
+    "contacts",
+    "campaigns",
+    "templates",
+    "automations",
+    "tickets",
+    "mcp"
+  ],
+  "category": "Inbox And Collaboration",
+  "tags": [
+    "spoki",
+    "whatsapp",
+    "messaging",
+    "mcp"
+  ],
+  "variables": {
+    "type": "object",
+    "properties": {
+      "SPOKI_API_KEY": {
+        "type": "string",
+        "title": "Spoki API key",
+        "description": "In Spoki: Integrations → Spoki MCP → Request Api Key. Sent as the X-Spoki-Api-Key header."
+      }
+    },
+    "required": [
+      "SPOKI_API_KEY"
+    ]
+  },
+  "mcpServers": "./mcp.json",
+  "skills": "./skills/"
+}

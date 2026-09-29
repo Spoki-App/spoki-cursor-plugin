@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "spoki": {
+      "type": "http",
+      "url": "https://mcp.spoki.com/v2/mcp",
+      "headers": {
+        "X-Spoki-Api-Key": "${SPOKI_API_KEY}"
+      },
+      "placement": "server"
+    }
+  }
+}
