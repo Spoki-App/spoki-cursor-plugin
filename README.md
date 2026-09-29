@@ -56,7 +56,7 @@ Contact totals plus list and tag counts. Automation totals (including active). C
 
 ### Get the API key
 
-1. Sign in at [app.spoki.it](https://app.spoki.it).
+1. Sign in at [app.spoki.com](https://app.spoki.com).
 2. Go to **Integrations → Spoki MCP → Request Api Key**.
 3. Paste the key into the plugin variable. Treat it like a password. Anyone with it can act as your Spoki account.
 
@@ -99,7 +99,7 @@ Thin helpers so the agent knows when to reach for Spoki and how to get a key. Th
 ## Links
 
 - [spoki.com](https://spoki.com)
-- [app.spoki.it](https://app.spoki.it)
+- [app.spoki.com](https://app.spoki.com)
 - Support: support@spoki.com
 
 ## License
