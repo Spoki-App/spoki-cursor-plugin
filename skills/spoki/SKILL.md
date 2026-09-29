@@ -1,6 +1,6 @@
 ---
 name: spoki
-description: Use when the user wants to work with their Spoki WhatsApp Business account - contacts, lists, tags, custom fields, message templates, campaigns, automations, support tickets, operators, or account stats - or mentions Spoki. Also use when the Spoki MCP server needs an API key, fails to connect, or returns invalid_api_key.
+description: Use when the user wants to work with their Spoki WhatsApp Business account (contacts, lists, tags, custom fields, message templates, campaigns, automations, support tickets, operators, or account stats) or mentions Spoki. Also use when the Spoki MCP server needs an API key, fails to connect, or returns invalid_api_key.
 ---
 
 # Spoki
