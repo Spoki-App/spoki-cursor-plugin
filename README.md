@@ -1,64 +1,66 @@
-# Spoki plugin for Cursor and Grok Bot
+# Spoki (Cursor / Grok Bot plugin)
 
 <img src="assets/logo.svg" alt="Spoki" width="96" height="96">
 
-The Spoki plugin connects Cursor and Grok Bot agents to your [Spoki](https://spoki.com) WhatsApp Business account through Spoki's remote MCP server:
+WhatsApp messaging for your AI agent, powered by [Spoki](https://www.spoki.com) remote MCP.
 
-```text
-https://mcp.spoki.com/v2/mcp
-```
+Install this plugin in **Cursor** or **Grok Bot** (same marketplace catalog). Your agent talks to Spoki over MCP: contacts, templates, campaigns, automations, lists, tags, tickets, and more. No invented APIs. Tools come from the live Spoki MCP server.
 
-It uses Streamable HTTP and authenticates with your Spoki API key, which it sends in the `X-Spoki-Api-Key` header. The server is remote, so the plugin installs nothing locally. It consists of an MCP server entry, one skill, and a logo.
+**Repo:** https://github.com/Spoki-App/spoki-cursor-plugin  
+**MCP docs:** https://support.spoki.com/en/docs/integrations/get-started-with-spoki-mcp/  
+**MCP URL:** `https://mcp.spoki.com/v2/mcp`
 
-## What the agent can do
+---
 
-The agent uses the tools that the Spoki server returns at connect time (`tools/list`). That live list is the source of truth, and it depends on your account. Ticket tools, for example, appear only when the tickets feature is enabled. Spoki's published catalog covers:
+## What you get
 
-- **Contacts:** search, get or create by phone, update, block, tag, and set custom field values.
-- **Lists:** create and maintain lists, add or remove contacts by ID or by filter, and import from HubSpot or Klaviyo.
-- **Tags and custom fields:** create, update, and delete tags and custom fields, merge tags, add tag categories, and see where a custom field is used.
-- **Templates:** create, update, and delete WhatsApp message templates, and submit them for approval.
-- **Campaigns:** list, schedule, and review campaign performance.
-- **Automations:** list, switch on or off, and trigger an automation for a contact.
-- **Tickets:** browse, create, assign, and close tickets, if tickets are enabled.
-- **Stats and team:** contact, automation, and campaign stats, and the operators on your account.
+| Piece | Role |
+|-------|------|
+| `.cursor-plugin/plugin.json` | Marketplace manifest (name `spoki`, category Inbox And Collaboration). Declares the `SPOKI_API_KEY` variable. |
+| `mcp.json` | Remote MCP connection to Spoki (Streamable HTTP, `X-Spoki-Api-Key` header) |
+| `skills/spoki/SKILL.md` | Thin guide: when to use Spoki, how to get an API key |
+| `assets/logo.svg` | Spoki logo for the listing |
+| `scripts/smoke_test.py` | Optional key check against the live server (Python 3, standard library only) |
 
-See [Supported Tools & Actions](https://support.spoki.com/en/docs/integrations/get-started-with-spoki-mcp/#supported-tools--actions) for the current list.
+The plugin is **configuration only**. It does not ship Spoki backend code. Runtime is Spoki MCP. The smoke test script is a helper you run yourself. The plugin never runs it.
 
-## Get your Spoki API key
+---
 
-1. Log in to Spoki at [app.spoki.com](https://app.spoki.com) and go to **Integrations** → **Spoki MCP** → **Request Api Key**.
-2. Copy the key.
-3. Keep the key private. Anyone who has it can use your Spoki account. Don't commit it to a repository or paste it into chat.
+## Requirements
+
+- A Spoki account with MCP enabled
+- An API key from Spoki → Integrations → Spoki MCP → Request Api Key (see [Get your API key](#get-your-api-key))
+- Cursor and/or Grok Bot with Plugins / MCP support
+
+---
 
 ## Install
 
-### Cursor
+### From the marketplace (recommended)
 
-1. Open **Customize**, search the marketplace for **Spoki**, and select **Install**.
-2. When Cursor asks for `SPOKI_API_KEY`, paste your API key. To change it later, open **Plugins** in the Cursor dashboard and select **Configure** on Spoki.
-3. In **Customize**, check that the `spoki` MCP server is connected and lists its tools.
+1. Open Cursor or Grok Bot Plugins. In Cursor, open **Customize**. In Grok Bot, select **Plugins** in the sidebar (mobile app: tap your avatar, then **Plugins**).
+2. Find **Spoki** under **Inbox And Collaboration**.
+3. Install.
+4. When prompted, set the plugin variable `SPOKI_API_KEY` to your Spoki MCP API key. To change it later in Cursor, open **Plugins** in the Cursor dashboard and select **Configure** on Spoki.
+5. Smoke-test: ask the agent to list tags or fetch contacts. See [Smoke test](#smoke-test).
 
-### Grok Bot
+### From this repo (dev / review)
 
-1. Select **Plugins** in the sidebar. In the mobile app, tap your avatar in the top left, then select **Plugins**.
-2. Search for **Spoki** and add it.
-3. Enter your API key when Grok Bot asks for `SPOKI_API_KEY`.
-4. Check that Spoki appears under **Installed**.
+1. Clone into Cursor's local plugins folder. Cursor skips symlinks that point to a folder elsewhere on disk, so clone or copy instead of linking.
 
-### Test the plugin before it is listed
+   ```bash
+   git clone https://github.com/Spoki-App/spoki-cursor-plugin.git ~/.cursor/plugins/local/spoki
+   ```
 
-Cursor loads unlisted plugins from `~/.cursor/plugins/local`. Clone the repository into that folder. Cursor skips symlinks that point to a folder elsewhere on disk.
+2. Run **Developer: Reload Window**. In **Customize**, check that the Spoki plugin, its `spoki` MCP server, and the `spoki` skill are listed.
+3. Set `SPOKI_API_KEY` with **Configure** on the plugin (never commit it). If **Configure** isn't available for a local copy, use the manual setup below.
+4. Confirm `mcp.json` points at `https://mcp.spoki.com/v2/mcp`.
 
-```bash
-git clone https://github.com/Spoki-App/spoki-cursor-plugin ~/.cursor/plugins/local/spoki
-```
-
-Run **Developer: Reload Window**. Then open **Customize** and check that the Spoki plugin, its `spoki` MCP server, and the `spoki` skill are listed. Set `SPOKI_API_KEY` with **Configure** on the plugin. If **Configure** isn't available for a local copy, use the manual setup below instead. On Teams and Enterprise plans, an admin must turn on **Allow Local Plugin Imports**.
+On Teams and Enterprise plans, an admin must turn on **Allow Local Plugin Imports**.
 
 ### Manual setup without the plugin
 
-You can also add the server to `~/.cursor/mcp.json` yourself. Store the key in an environment variable named `SPOKI_API_KEY`, which Cursor reads at startup:
+Add the server to `~/.cursor/mcp.json` and keep the key in an environment variable named `SPOKI_API_KEY`, which Cursor reads at startup:
 
 ```json
 {
@@ -73,11 +75,34 @@ You can also add the server to `~/.cursor/mcp.json` yourself. Store the key in a
 }
 ```
 
+---
+
+## Auth
+
+Spoki MCP (Cursor / Grok path) uses an HTTP header:
+
+- Header name: `X-Spoki-Api-Key`
+- Header value: your Spoki MCP API key
+
+The plugin declares the `SPOKI_API_KEY` variable, and `mcp.json` references `${SPOKI_API_KEY}` only.
+
+### Get your API key
+
+1. Log in to Spoki at [app.spoki.com](https://app.spoki.com) and go to **Integrations** → **Spoki MCP** → **Request Api Key**.
+2. Copy the key.
+3. Keep it private. Anyone who has the key can use your Spoki account.
+
+**Never** put API keys in git, screenshots of secrets, or PR descriptions.
+
+Other Spoki MCP auth modes (e.g. Claude OAuth) are documented on support.spoki.com. They are not the default for this Cursor / Grok Bot listing.
+
+---
+
 ## Smoke test
 
 ### 1. Check the key from a terminal
 
-The script needs Python 3 and nothing else. It connects to the server, prints the live `tools/list`, and lists your tags with `get_tags`, which only reads data. `read -rs` keeps the key out of your shell history.
+`scripts/smoke_test.py` connects to the server, prints the live `tools/list`, and lists your tags with `get_tags`, which only reads data. `read -rs` keeps the key out of your shell history.
 
 ```bash
 read -rs SPOKI_API_KEY && export SPOKI_API_KEY
@@ -86,7 +111,7 @@ python3 scripts/smoke_test.py
 
 A working key prints `Connected: ...`, then the live tool list, then your tags and `Smoke test passed.` A wrong or inactive key prints `invalid_api_key`.
 
-Without a checkout, you can use Spoki's `curl` check. A valid key returns a response that contains `"serverInfo"`.
+Without a checkout, use Spoki's `curl` check. A valid key returns a response that contains `"serverInfo"`.
 
 ```bash
 curl -X POST https://mcp.spoki.com/v2/mcp \
@@ -104,35 +129,124 @@ In Cursor or Grok Bot, ask:
 
 The agent should call Spoki's tag tool (`get_tags`) and answer with the tags in your account.
 
+---
+
+## Tools (live MCP wins)
+
+After auth, the agent discovers tools via MCP `tools/list`. That live list is the source of truth if docs drift.
+
+Documented surface (checklist from Spoki MCP docs):
+
+- **Contacts:** get/create/update, tags, fields, block, advanced search
+- **Automations:** list, get, activate, deactivate, trigger
+- **Campaigns:** list, get, create, upcoming events
+- **Lists:** CRUD, sync, import jobs, HubSpot / Klaviyo import
+- **Templates:** CRUD, submit
+- **Tags / tag categories:** tags CRUD and merge; tag categories list and create
+- **Custom fields:** CRUD, usage
+- **Tickets** (if enabled on the account): list, get, create, update, close, assign, categories
+- **Analytics / operators:** contact stats, automation stats, campaign performance, operators
+
+Exact tool names: see [Spoki support docs](https://support.spoki.com/en/docs/integrations/get-started-with-spoki-mcp/#supported-tools--actions) and live `tools/list`.
+
+---
+
+## Example prompts
+
+- "List my Spoki tags."
+- "Find or create a contact with phone +39…"
+- "Show campaigns and their status."
+- "Trigger automation X for contact Y."
+- "Draft a WhatsApp template draft (do not submit until I confirm)."
+
+Prefer read / preview before write when the agent can change live account data.
+
+---
+
+## Compatibility
+
+| Client | Support |
+|--------|---------|
+| Cursor | Primary (marketplace + MCP) |
+| Grok Bot | Same marketplace catalog. `mcp.json` sets `"placement": "server"`, which Grok Bot requires before it connects to a plugin's MCP server. |
+| Other MCP clients | You can point any MCP client at `https://mcp.spoki.com/v2/mcp` with `X-Spoki-Api-Key`; this repo is the Cursor Plugin packaging |
+
+---
+
+## Data and privacy
+
+- The plugin stores no Spoki customer data.
+- Traffic goes between your agent client and Spoki MCP using **your** API key and account permissions. Grok Bot sends it through Cursor's hosted MCP connection.
+- Scope is limited to what Spoki MCP exposes for that account.
+- Governed by Spoki Terms and Privacy Policy: https://www.spoki.com
+
+---
+
+## Security checklist
+
+- [ ] API key only in client secrets / plugin variables
+- [ ] No keys in README examples (use placeholders)
+- [ ] Rotate the key if it leaks
+- [ ] Least privilege: use a key from an account role you trust
+
+---
+
 ## Troubleshooting
 
-| What you see | What it means | What to do |
-| --- | --- | --- |
-| `invalid_api_key` or `invalid or inactive X-Spoki-Api-Key` | The key is wrong or inactive, or the variable was not filled in. | Re-enter `SPOKI_API_KEY`, or request a new key in Spoki. |
-| `No bearer access token was provided` | The request reached Spoki without a key. | Set `SPOKI_API_KEY` on the plugin. |
-| Some tools are missing, such as tickets | The feature is not enabled on your Spoki account. | Enable the feature in Spoki, then reconnect. |
+| Symptom | Check |
+|---------|--------|
+| Tools empty / auth errors | `SPOKI_API_KEY` set? Header name exactly `X-Spoki-Api-Key`? |
+| `invalid_api_key` (`invalid or inactive X-Spoki-Api-Key`) | The key is wrong or inactive, or the variable was not filled in. Re-enter `SPOKI_API_KEY` or request a new key. |
+| `No bearer access token was provided` | No key reached Spoki. Set `SPOKI_API_KEY` on the plugin. |
+| Wrong or missing tools | Re-run live `tools/list` (`python3 scripts/smoke_test.py`); compare to support docs (updated 2026-09-28+) |
+| Tickets tools missing | Feature may be off on the Spoki account |
+| Marketplace install fails | Confirm category **Inbox And Collaboration** and plugin name `spoki` |
 
-In Cursor, you can find connection errors in the **Output** panel under **MCP Logs**.
+In Cursor, connection errors appear in the **Output** panel under **MCP Logs**.
 
-## Repository layout
+More: https://support.spoki.com/en/docs/integrations/get-started-with-spoki-mcp/
+
+---
+
+## Development (Spoki team)
+
+Tasks | IT **#6087**. Agent Kit. Plan Review Slave. Marketplace publish: CoS.
+
+Layout:
 
 ```text
-.cursor-plugin/plugin.json   Plugin manifest. Declares the SPOKI_API_KEY variable.
-mcp.json                     The remote spoki MCP server.
-skills/spoki/SKILL.md        When to use Spoki, API key setup, and working rules for the agent.
-assets/logo.svg              Spoki logo.
-scripts/smoke_test.py        Checks a key against the live server.
+spoki-cursor-plugin/
+├── .cursor-plugin/plugin.json
+├── mcp.json
+├── skills/spoki/SKILL.md   # thin skill
+├── assets/logo.svg
+├── scripts/smoke_test.py   # optional key check, not run by the plugin
+├── LICENSE
+└── README.md
 ```
 
-`mcp.json` sets `"placement": "server"`. Grok Bot connects only to MCP servers that declare this placement, and routes their calls through Cursor's hosted MCP connection.
+`plugin.json` locks:
 
-This repository contains no secrets. `mcp.json` holds only the `${SPOKI_API_KEY}` placeholder, and you supply the value when you install the plugin.
+- `name`: `spoki`
+- `displayName`: `Spoki`
+- `repository`: `https://github.com/Spoki-App/spoki-cursor-plugin`
+- Category string: **Inbox And Collaboration**
 
-## Support
+Do not invent MCP endpoints or tool names. Do not use the Unicode em dash character in any copy.
 
-- Spoki MCP docs: [Get Started with Spoki MCP](https://support.spoki.com/en/docs/integrations/get-started-with-spoki-mcp/)
-- Email: [support@spoki.com](mailto:support@spoki.com)
+---
 
 ## License
 
-[MIT](LICENSE)
+[MIT](LICENSE) (unless Spoki Legal sets otherwise).
+
+---
+
+## Support
+
+- Product docs: https://support.spoki.com  
+- Email: support@spoki.com  
+- Website: https://www.spoki.com  
+- Issues: use this GitHub repo Issues for plugin packaging only (MCP server bugs go through Spoki support)
+
+Spoki © Spoki
