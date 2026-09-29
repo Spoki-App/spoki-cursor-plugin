@@ -37,7 +37,7 @@
       "SPOKI_API_KEY": {
         "type": "string",
         "title": "Spoki API key",
-        "description": "From app.spoki.it: Integrations → Spoki MCP → Request Api Key. Sent as the X-Spoki-Api-Key header."
+        "description": "In Spoki: Integrations → Spoki MCP → Request Api Key. Sent as the X-Spoki-Api-Key header."
       }
     },
     "required": [

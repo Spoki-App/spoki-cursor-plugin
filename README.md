@@ -23,11 +23,11 @@ The agent uses the tools that the Spoki server returns at connect time (`tools/l
 - **Tickets:** browse, create, assign, and close tickets, if tickets are enabled.
 - **Stats and team:** contact, automation, and campaign stats, and the operators on your account.
 
-See [Supported Tools & Actions](https://support.spoki.com/en/docs/integrations/get-started-with-spoki-mcp/#supported-tools-actions) for the current list.
+See [Supported Tools & Actions](https://support.spoki.com/en/docs/integrations/get-started-with-spoki-mcp/#supported-tools--actions) for the current list.
 
 ## Get your Spoki API key
 
-1. In Spoki, go to [app.spoki.it](https://app.spoki.it) → **Integrations** → **Spoki MCP** → **Request Api Key**.
+1. Log in to Spoki at [app.spoki.com](https://app.spoki.com) and go to **Integrations** → **Spoki MCP** → **Request Api Key**.
 2. Copy the key.
 3. Keep the key private. Anyone who has it can use your Spoki account. Don't commit it to a repository or paste it into chat.
 

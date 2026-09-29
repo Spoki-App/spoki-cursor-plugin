@@ -21,7 +21,7 @@ Spoki is a WhatsApp Business platform. This plugin connects the agent to the use
 
 - Use only the tools that the `spoki` server returns from `tools/list`. The catalog depends on the account. For example, ticket tools appear only when tickets are enabled.
 - Do not assume a tool exists because Spoki's docs or this skill mention it. If nothing in the list covers the request, tell the user. Do not guess tool names, arguments, or IDs, and do not call Spoki's REST API directly.
-- Spoki's published catalog is a reference only: https://support.spoki.com/en/docs/integrations/get-started-with-spoki-mcp/#supported-tools-actions
+- Spoki's published catalog is a reference only: https://support.spoki.com/en/docs/integrations/get-started-with-spoki-mcp/#supported-tools--actions
 
 ## Working rules
 
@@ -31,7 +31,7 @@ Spoki is a WhatsApp Business platform. This plugin connects the agent to the use
 
 ## API key and connection
 
-1. The user gets a key in Spoki at app.spoki.it: **Integrations → Spoki MCP → Request Api Key**. Anyone with the key can use the account, so it must stay private.
+1. The user gets a key in Spoki (app.spoki.com): **Integrations → Spoki MCP → Request Api Key**. Anyone with the key can use the account, so it must stay private.
 2. The key goes in the plugin's `SPOKI_API_KEY` variable, which is set when the plugin is installed or later under **Plugins → Configure** in the Cursor dashboard. The plugin sends it as the `X-Spoki-Api-Key` header. Never ask the user to paste the key into chat.
 3. Errors from the server:
    - `invalid_api_key` (`invalid or inactive X-Spoki-Api-Key`): the key is wrong, revoked, or was not substituted. Ask the user to check the variable or request a new key.
