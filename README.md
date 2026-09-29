@@ -8,7 +8,7 @@ The Spoki plugin connects Cursor and Grok Bot agents to your [Spoki](https://spo
 https://mcp.spoki.com/v2/mcp
 ```
 
-It uses Streamable HTTP and authenticates with your Spoki API key, which it sends in the `X-Spoki-Api-Key` header. Nothing runs on your machine. The plugin contains an MCP server entry, one skill, and a logo.
+It uses Streamable HTTP and authenticates with your Spoki API key, which it sends in the `X-Spoki-Api-Key` header. The server is remote, so the plugin installs nothing locally. It consists of an MCP server entry, one skill, and a logo.
 
 ## What the agent can do
 
@@ -16,8 +16,8 @@ The agent uses the tools that the Spoki server returns at connect time (`tools/l
 
 - **Contacts:** search, get or create by phone, update, block, tag, and set custom field values.
 - **Lists:** create and maintain lists, add or remove contacts by ID or by filter, and import from HubSpot or Klaviyo.
-- **Tags and custom fields:** create, update, merge, and delete tags, tag categories, and custom fields.
-- **Templates:** create WhatsApp message templates and submit them for approval.
+- **Tags and custom fields:** create, update, and delete tags and custom fields, merge tags, add tag categories, and see where a custom field is used.
+- **Templates:** create, update, and delete WhatsApp message templates, and submit them for approval.
 - **Campaigns:** list, schedule, and review campaign performance.
 - **Automations:** list, switch on or off, and trigger an automation for a contact.
 - **Tickets:** browse, create, assign, and close tickets, if tickets are enabled.
@@ -54,7 +54,7 @@ Cursor loads unlisted plugins from `~/.cursor/plugins/local`. Clone the reposito
 git clone https://github.com/Spoki-App/spoki-cursor-plugin ~/.cursor/plugins/local/spoki
 ```
 
-Run **Developer: Reload Window**. Then open **Customize** and check that the Spoki plugin, its `spoki` MCP server, and the `spoki` skill are listed. Set `SPOKI_API_KEY` with **Configure** on the plugin. On Teams and Enterprise plans, an admin must turn on **Allow Local Plugin Imports**.
+Run **Developer: Reload Window**. Then open **Customize** and check that the Spoki plugin, its `spoki` MCP server, and the `spoki` skill are listed. Set `SPOKI_API_KEY` with **Configure** on the plugin. If **Configure** isn't available for a local copy, use the manual setup below instead. On Teams and Enterprise plans, an admin must turn on **Allow Local Plugin Imports**.
 
 ### Manual setup without the plugin
 
